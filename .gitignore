@@ -74,3 +74,6 @@ crashlytics-build.properties
 
 #macOS System Files
 .DS_Store
+
+# Other Files
+TextMesh Pro/
