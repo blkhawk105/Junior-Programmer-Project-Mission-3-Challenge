@@ -14,7 +14,7 @@ public class MainManager : MonoBehaviour
     public TextMeshProUGUI BestScorePlayerName;
     public TextMeshProUGUI ScoreText;
     public TextMeshProUGUI BestScoreText;
-    public GameObject GameOverText;
+    public GameObject GameOverView;
 
     public string CurrentPlayer;
     
@@ -86,7 +86,7 @@ public class MainManager : MonoBehaviour
     public void GameOver()
     {
         m_GameOver = true;
-        GameOverText.SetActive(true);
+        GameOverView.SetActive(true);
 
         if(SaveManager.Instance.HighScore < m_Points)
         {
@@ -101,5 +101,10 @@ public class MainManager : MonoBehaviour
 
         BestScorePlayerName.text = "Name: " + SaveManager.Instance.HighScorePlayerName;
         BestScoreText.text = "Score: " + SaveManager.Instance.HighScore.ToString();
+    }
+
+    public void ReturnToMainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }
