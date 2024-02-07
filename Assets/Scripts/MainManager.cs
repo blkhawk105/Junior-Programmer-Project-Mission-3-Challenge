@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class MainManager : MonoBehaviour
 {
@@ -11,8 +11,12 @@ public class MainManager : MonoBehaviour
     public int LineCount = 6;
     public Rigidbody Ball;
 
-    public Text ScoreText;
+    public TextMeshProUGUI BestScorePlayerName;
+    public TextMeshProUGUI ScoreText;
+    public TextMeshProUGUI BestScoreText;
     public GameObject GameOverText;
+
+    public string CurrentPlayer;
     
     private bool m_Started = false;
     private int m_Points;
@@ -37,6 +41,10 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
+
+        CurrentPlayer = SaveManager.Instance.CurrentPlayer;
+
+        LoadHighScore();
     }
 
     private void Update()
@@ -67,46 +75,31 @@ public class MainManager : MonoBehaviour
     {
         m_Points += point;
         ScoreText.text = $"Score : {m_Points}";
+
+        if(m_Points > SaveManager.Instance.HighScore)
+        {
+            BestScorePlayerName.text = "Name: " + CurrentPlayer;
+            BestScoreText.text = "Score: " + m_Points;
+        }
     }
 
     public void GameOver()
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
-    }
 
-
-    // Add persistance
-    [System.Serializable]
-    class SaveData
-    {
-        public int score;
-    }
-
-    public void Save()
-    {
-        SaveData data = new SaveData();
-        data.score = m_Points;
-
-        string json = JsonUtility.ToJson(data);
-
-        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
-
-        Debug.Log("Saved");
-    }
-
-    public void Load()
-    {
-        string path = Application.persistentDataPath + "/savefile.json";
-
-        if(File.Exists(path))
+        if(SaveManager.Instance.HighScore < m_Points)
         {
-            string json = File.ReadAllText(path);
-            SaveData data = JsonUtility.FromJson<SaveData>(json);
-
-            m_Points = data.score;
+            SaveManager.Instance.SaveTopScore(CurrentPlayer, m_Points);
         }
+    }
 
-        Debug.Log("Loaded");
+
+    private void LoadHighScore()
+    {
+        SaveManager.Instance.LoadTopScore();
+
+        BestScorePlayerName.text = "Name: " + SaveManager.Instance.HighScorePlayerName;
+        BestScoreText.text = "Score: " + SaveManager.Instance.HighScore.ToString();
     }
 }

@@ -1668,10 +1668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 704577be4dcb644f783dfa7362842620, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NewPlayerName: {fileID: 1017635870}
-  HighScorePlayerName: {fileID: 678920401}
-  HighScoreText: {fileID: 568076169}
-  HighScore: 0
+  CurrentPlayer: 
 --- !u!4 &1668652272
 Transform:
   m_ObjectHideFlags: 0
@@ -1997,6 +1994,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0988aa86232545e294868b84a94b594, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NewPlayerNameText: {fileID: 1741284856}
+  HighScorePlayerNameText: {fileID: 678920401}
+  HighScoreText: {fileID: 568076169}
 --- !u!4 &1751785331
 Transform:
   m_ObjectHideFlags: 0

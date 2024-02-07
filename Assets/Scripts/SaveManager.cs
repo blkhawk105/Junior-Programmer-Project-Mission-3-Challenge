@@ -1,19 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using TMPro;
 using UnityEngine;
 
 public class SaveManager : MonoBehaviour
 {
     public static SaveManager Instance;
 
-    public TextMeshProUGUI NewPlayerName;
+    public string CurrentPlayer;
 
-    public TextMeshProUGUI HighScorePlayerName;
-    public TextMeshProUGUI HighScoreText;
-
-    public int HighScore;
+    public string HighScorePlayerName { get; private set; }
+    public int HighScore { get; private set; }
 
     private void Awake()
     {
@@ -27,26 +24,22 @@ public class SaveManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         LoadTopScore();
-        HighScoreText.text = HighScore.ToString();
-
-        // HighScore = 0;
-        // SaveTopScore();
     }
 
 
     [System.Serializable]
     class SaveData
     {
-        public string highScorePlayerName;
-        public int highScore;
+        public string HighScorePlayerName;
+        public int HighScore;
     }
 
-    public void SaveTopScore()
+    public void SaveTopScore(string name, int score)
     {
         SaveData data = new()
         {
-            highScorePlayerName = NewPlayerName.text,
-            highScore = HighScore
+            HighScorePlayerName = name,
+            HighScore = score
         };
 
 
@@ -66,14 +59,20 @@ public class SaveManager : MonoBehaviour
             string json = File.ReadAllText(path);
             SaveData data = JsonUtility.FromJson<SaveData>(json);
 
-            HighScorePlayerName.text = data.highScorePlayerName;
-            HighScore = data.highScore;
+            HighScorePlayerName = data.HighScorePlayerName;
+            HighScore = data.HighScore;
         }
         else
         {
-            HighScorePlayerName.text = "Will it be you?";
+            HighScorePlayerName = "Will it be you?";
+            HighScore = 0;
         }
 
-        Debug.Log("Score Loaded");
+        Debug.Log("Score Loaded for: " + HighScorePlayerName);
+        
+        // Show the save path when running in the editor
+        #if UNITY_EDITOR
+            Debug.Log(path);
+        #endif
     }
 }
