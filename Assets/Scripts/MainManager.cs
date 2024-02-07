@@ -16,8 +16,9 @@ public class MainManager : MonoBehaviour
     public TextMeshProUGUI BestScoreText;
     public GameObject GameOverView;
 
-    public string CurrentPlayer;
-    
+    public TextMeshProUGUI CurrentPlayerText;
+
+    private string currentPlayer;
     private bool m_Started = false;
     private int m_Points;
     
@@ -42,7 +43,8 @@ public class MainManager : MonoBehaviour
             }
         }
 
-        CurrentPlayer = SaveManager.Instance.CurrentPlayer;
+        currentPlayer = SaveManager.Instance.CurrentPlayer;
+        CurrentPlayerText.text = "Current Player: " + currentPlayer;
 
         LoadHighScore();
     }
@@ -78,7 +80,7 @@ public class MainManager : MonoBehaviour
 
         if(m_Points > SaveManager.Instance.HighScore)
         {
-            BestScorePlayerName.text = "Name: " + CurrentPlayer;
+            BestScorePlayerName.text = "Name: " + currentPlayer;
             BestScoreText.text = "Score: " + m_Points;
         }
     }
@@ -90,7 +92,7 @@ public class MainManager : MonoBehaviour
 
         if(SaveManager.Instance.HighScore < m_Points)
         {
-            SaveManager.Instance.SaveTopScore(CurrentPlayer, m_Points);
+            SaveManager.Instance.SaveTopScore(currentPlayer, m_Points);
         }
     }
 
