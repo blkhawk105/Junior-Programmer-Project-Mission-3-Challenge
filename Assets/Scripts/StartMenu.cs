@@ -15,6 +15,8 @@ public class StartMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SaveManager.Instance.LoadTopScore();
+        
         HighScorePlayerNameText.text = "Name: " + SaveManager.Instance.HighScorePlayerName;
         HighScoreText.text = "Score: " + SaveManager.Instance.HighScore.ToString();
     }
